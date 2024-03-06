@@ -24,8 +24,8 @@
         /* exported handleSignoutClick */
 
         // TODO(developer): Set to client ID and API key from the Developer Console
-        const CLIENT_ID = '';
-        const API_KEY = '';
+        const CLIENT_ID = '7464836572-lq57ibd7mi4t5dctk95lhp89b04vitkv.apps.googleusercontent.com';
+        const API_KEY = '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';
 
         // Discovery doc URL for APIs used by the quickstart
         const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest';
@@ -174,7 +174,8 @@
             try {
                 response = await gapi.client.gmail.users.messages.get({
                     'userId': 'me',
-                    'id': messageId
+                    'id': messageId,
+                    'format': 'full'
                 });
             } catch (err) {
                 console.error('Error fetching message:', err);
@@ -182,9 +183,19 @@
             }
             const message = response.result;
             const snippet = message.snippet;
+              let body = '';
+               if (message.payload && message.payload.parts) {
+                for (const part of message.payload.parts) {
+                    if (part.mimeType === 'text/plain') {
+                        body = atob(part.body.data.replace(/-/g, '+').replace(/_/g, '/')); // Decode base64 body
+                        break;
+                    }
+                }
+            }
             const mainElement = document.getElementById('main');
             const messageElement = document.createElement('div');
-            messageElement.textContent = snippet;
+            // messageElement.textContent = snippet;
+             messageElement.innerHTML = `<strong>Snippet:</strong> ${snippet}<br><strong>Body:</strong> ${body}`;
             mainElement.appendChild(messageElement);
         }
 

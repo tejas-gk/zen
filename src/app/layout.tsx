@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <script
+          async
+          defer
+          src="https://apis.google.com/js/api.js"
+          onLoad={()=>gapiLoaded()}
+        />
+        <script
+          async
+          defer
+          src="https://accounts.google.com/gsi/client"
+          onLoad={()=>gisLoaded()}
+        />
+        </Head>
       <body className={inter.className}>{children}</body>
     </html>
   );
