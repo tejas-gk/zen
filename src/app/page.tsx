@@ -1,31 +1,53 @@
-import { cookies } from "next/headers"
-import Image from "next/image"
+'use client'
+import React from 'react';
+import Script from 'next/script';
+import { gapiLoaded, gisLoaded, handleAuthClick, listMessages, handleSignoutClick } from './try/f.js';
+import { Mail } from "@/components/mail";
+import { accounts } from "./data";
 
-import { Mail } from "@/components/mail"
-import { accounts, mails } from "./data"
-import { Button } from "@/components/ui/button"
+const MailPage = () => {
+  const [mail, setMail] = React.useState([]);
 
-export default function MailPage() {
-  const layout = cookies().get("react-resizable-panels:layout")
-  const collapsed = cookies().get("react-resizable-panels:collapsed")
+  const d = [19.4852941176, 32.3529411765, 48.1617647059];
 
-  const defaultLayout = layout ? JSON.parse(layout.value) : undefined
-  const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined
+  const filterOTP = React.useCallback(() => {
+    // Implement your filter logic here
+  }, []);
 
   return (
     <>
-      <Button>
-        Auth
-      </Button>
+      <Script
+        src="https://apis.google.com/js/api.js"
+        strategy="afterInteractive"
+        onLoad={gapiLoaded}
+      />
+      <Script
+        src="https://accounts.google.com/gsi/client"
+        strategy="afterInteractive"
+        onLoad={gisLoaded}
+      />
+      <button onClick={handleAuthClick}>Sign in with Google</button>
+      <pre id="content"></pre>
+      <button id="load_messages_button" onClick={async () => {
+        const m = await listMessages();
+        setMail(m);
+        console.log(mail);
+      }}>Load Messages</button>
+      <button id="signout_button" onClick={handleSignoutClick}>Sign Out</button>
+      <button onClick={filterOTP}>OTP</button>
+      <main id="main"></main>
+
       <div className="flex-col md:flex">
-        <Mail
+        <MemoizedMail
           accounts={accounts}
-          mails={mails}
-          defaultLayout={defaultLayout}
-          defaultCollapsed={defaultCollapsed}
+          mails={mail}
+          defaultLayout={d}
+          defaultCollapsed={undefined}
           navCollapsedSize={4}
         />
       </div>
     </>
-  )
-}
+  );
+};
+const MemoizedMail = React.memo(Mail);
+export default React.memo(MailPage);

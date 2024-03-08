@@ -1,6 +1,6 @@
 export const mails = [
   {
-    id: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
+    id: "18e1ffc0067f44e8",
     name: "William Smith",
     email: "williamsmith@example.com",
     subject: "Meeting Tomorrow",
