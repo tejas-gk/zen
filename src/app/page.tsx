@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import Script from 'next/script';
-import { gapiLoaded, gisLoaded, handleAuthClick, listMessages, handleSignoutClick,listLabels } from './try/f.js';
+import { gapiLoaded, gisLoaded, handleAuthClick, listMessages, handleSignoutClick, listLabels } from './try/f.js';
 import { Mail } from "@/components/mail";
 import { accounts } from "./data";
 import { MailCheck, MailCheckIcon } from 'lucide-react';
@@ -51,12 +51,12 @@ const MailPage = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <button onClick={filterOTP} className="flex items-center bg-yellow-500 text-white px-4 py-2 rounded-md">
+        {/* <button onClick={filterOTP} className="flex items-center bg-yellow-500 text-white px-4 py-2 rounded-md">
           <span className="mr-2">OTP</span>
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
-        </button>
+        </button> */}
       </div>
       <main id="main"></main>
 

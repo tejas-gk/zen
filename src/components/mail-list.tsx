@@ -8,44 +8,25 @@ import { Separator } from "@/components/ui/separator";
 import { Mail } from "../app/data";
 import { useMail } from "@/hooks/use-mail";
 import { atom, useAtom } from "jotai";
+import { Copy } from "lucide-react";
 
 interface MailListProps {
     items: Mail[][];
 }
+
 const emailTypeAtom = atom<string>("Unclassified");
+
 export function MailList({ items }: MailListProps) {
     const [mail, setMail] = useMail();
     const [emailType, setEmailType] = useAtom(emailTypeAtom);
-    console.log(items)
 
     const classifyEmail = useCallback((subject: string, setEmailType: (type: string) => void) => {
-        // const lowercaseSubject = subject.toLowerCase();
-
-        // // Define categories and their associated keywords
-        // const categories: { [key: string]: string[] } = {
-        //     OTP: ["otp", "code", "verification"],
-        //     Newsletter: ["newsletter", "update", "edition", "notification"],
-        //     WelcomeEmail: ["welcome", "registration", "account", "hello there", "granted"],
-        // };
-
-        // Iterate through categories
-        // for (const category in categories) {
-        //     // Iterate through keywords of the current category
-        //     for (const keyword of categories[category]) {
-        //         // If the keyword is found in the subject, set the email type and return the category
-        //         if (lowercaseSubject.includes(keyword)) {
-        //             setEmailType(category);
-        //             return category;
-        //         }
-        //     }
-        //     console.log(`Category matched for subject: '${subject}'`);
-        // }
-
-        // If no match is found, set the category as "Unclassified"
-        setEmailType("Unclassified");
-        console.log(`No category matched for subject: '${subject}'`);
-        return "Unclassified";
+        // Your classification logic goes here
     }, []);
+
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text);
+    };
 
     return (
         <ScrollArea className="h-screen">
@@ -68,7 +49,7 @@ export function MailList({ items }: MailListProps) {
                             >
                                 <div className="flex w-full flex-col gap-1">
                                     <div className="flex items-center">
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2" onClick={() => copyToClipboard(item.name)}>
                                             <div className="font-semibold">{item.name}</div>
                                             {!item.read && (
                                                 <span className="flex h-2 w-2 rounded-full bg-blue-600" />
@@ -77,9 +58,6 @@ export function MailList({ items }: MailListProps) {
                                         <div
                                             className={cn(
                                                 "ml-auto text-xs",
-                                                // mail.selected === item.id
-                                                //     ? "text-foreground"
-                                                //     : "text-muted-foreground"
                                             )}
                                         >
                                             {/* {formatDistanceToNow(new Date(item.date), {
@@ -92,7 +70,7 @@ export function MailList({ items }: MailListProps) {
                                 <div className="line-clamp-2 text-xs text-muted-foreground">
                                     {/* {item.text.substring(0, 300)} */}
                                 </div>
-                                <div className="flex items-center gap-2">
+                                {/* <div className="flex items-center gap-2">
                                     <Badge
                                         variant={getBadgeVariantFromLabel(
                                             classifyEmail(item.subject, setEmailType)
@@ -101,7 +79,10 @@ export function MailList({ items }: MailListProps) {
                                         {classifyEmail(item.name, setEmailType)}
                                     </Badge>
 
-                                </div>
+                                </div> */}
+                                <Copy
+                                    onClick={() => copyToClipboard(item.name)}
+                                ></Copy>
                                 <Separator />
                             </button>
                         ))}
