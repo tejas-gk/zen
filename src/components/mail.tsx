@@ -11,6 +11,7 @@ import {
     Search,
     Send,
     ShoppingCart,
+    Tag,
     Trash2,
     Users2,
 } from "lucide-react"
@@ -56,6 +57,7 @@ export function Mail({
     const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed)
     const [mail] = useMail()
     console.log(mails)
+    console.log(labels)
     return (
         <TooltipProvider delayDuration={0}>
             <ResizablePanelGroup
@@ -130,6 +132,12 @@ export function Mail({
                     <Nav
                         isCollapsed={isCollapsed}
                         links={[
+                            ...(labels?.map((label) => ({
+                                title: label,
+                                // label: '5',
+                                icon: Tag,
+                                variant: "ghost",
+                            })) || []),
                             {
                                 title: "Social",
                                 label: "972",
@@ -162,6 +170,7 @@ export function Mail({
                             },
                         ]}
                     />
+
                 </ResizablePanel>
                 <ResizableHandle withHandle />
                 <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>

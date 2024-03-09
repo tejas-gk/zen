@@ -108,27 +108,31 @@
          * Print all Labels in the authorized user's inbox. If no labels
          * are found an appropriate message is printed.
          */
-        async function listLabels() {
-            let response;
-            try {
-                response = await gapi.client.gmail.users.labels.list({
-                    'userId': 'me',
-                });
-            } catch (err) {
-                document.getElementById('content').innerText = err.message;
-                return;
-            }
-            const labels = response.result.labels;
-            if (!labels || labels.length == 0) {
-                document.getElementById('content').innerText = 'No labels found.';
-                return;
-            }
-            // Flatten to string to display
-            const output = labels.reduce(
-                (str, label) => `${str}${label.name}\n`,
-                'Labels:\n');
-            document.getElementById('content').innerText = output;
-        }
+  async function listLabels() {
+      let response;
+      let labels = [];
+      try {
+          response = await gapi.client.gmail.users.labels.list({
+              'userId': 'me',
+          });
+      } catch (err) {
+          console.error(err.message);
+          return [];
+      }
+
+      const resultLabels = response.result.labels;
+
+      if (!resultLabels || resultLabels.length === 0) {
+          console.error('No labels found.');
+          return [];
+      }
+
+      labels = resultLabels.map(label => label.name);
+
+      console.log('Labels:', labels);
+      return labels;
+  }
+
 
 
         async function listMessages() {
