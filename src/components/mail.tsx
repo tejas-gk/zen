@@ -51,6 +51,7 @@ export function Mail({
     defaultLayout = [265, 440, 655],
     defaultCollapsed = false,
     navCollapsedSize,
+    labels
 }: MailProps) {
     const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed)
     const [mail] = useMail()
@@ -190,11 +191,11 @@ export function Mail({
                     </Tabs>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={defaultLayout[2]}>
+                {/* <ResizablePanel defaultSize={defaultLayout[2]}>
                     <MailDisplay
                         mail={mails.find((item) => item.id === mail.selected) || null}
                     />
-                </ResizablePanel>
+                </ResizablePanel> */}
             </ResizablePanelGroup>
         </TooltipProvider>
     )

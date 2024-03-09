@@ -165,7 +165,7 @@
                     'id': messageId,
                     'format': 'full'
                 });
-            } catch (err) {
+            } catch (err) { 
                 console.error('Error fetching message:', err);
                 return;
             }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 import { cn } from "@/lib/utils";
@@ -18,27 +18,34 @@ export function MailList({ items }: MailListProps) {
     const [emailType, setEmailType] = useAtom(emailTypeAtom);
     console.log(items)
 
-    const classifyEmail = (subject: string) => {
+    const classifyEmail = useCallback((subject: string, setEmailType: (type: string) => void) => {
+        // const lowercaseSubject = subject.toLowerCase();
+
+        // // Define categories and their associated keywords
         // const categories: { [key: string]: string[] } = {
         //     OTP: ["otp", "code", "verification"],
         //     Newsletter: ["newsletter", "update", "edition", "notification"],
-        //     WelcomeEmail: ["welcome", "registration", "account", "Hello There", "Granted"],
+        //     WelcomeEmail: ["welcome", "registration", "account", "hello there", "granted"],
         // };
 
-        // for (const [category, keywords] of Object.entries(categories)) {
-        //     for (const keyword of keywords) {
-        //         console.log(`Checking keyword '${keyword}' for category '${category}'`);
-        //         if (subject.toLowerCase().includes(keyword)) {
-        //             console.log(`Match found for keyword '${keyword}'`);
+        // Iterate through categories
+        // for (const category in categories) {
+        //     // Iterate through keywords of the current category
+        //     for (const keyword of categories[category]) {
+        //         // If the keyword is found in the subject, set the email type and return the category
+        //         if (lowercaseSubject.includes(keyword)) {
         //             setEmailType(category);
         //             return category;
         //         }
         //     }
+        //     console.log(`Category matched for subject: '${subject}'`);
         // }
-        // setEmailType("Unclassified");
-        // console.log(`No category matched for subject: '${subject}'`);
+
+        // If no match is found, set the category as "Unclassified"
+        setEmailType("Unclassified");
+        console.log(`No category matched for subject: '${subject}'`);
         return "Unclassified";
-    };
+    }, []);
 
     return (
         <ScrollArea className="h-screen">
@@ -88,10 +95,10 @@ export function MailList({ items }: MailListProps) {
                                 <div className="flex items-center gap-2">
                                     <Badge
                                         variant={getBadgeVariantFromLabel(
-                                            classifyEmail(item.subject)
+                                            classifyEmail(item.subject, setEmailType)
                                         )}
                                     >
-                                        {classifyEmail(item.name)}
+                                        {classifyEmail(item.name, setEmailType)}
                                     </Badge>
 
                                 </div>
